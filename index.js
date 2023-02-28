@@ -1,3 +1,5 @@
+
+
 const express = require('express'),
     morgan = require('morgan'),
     app = express(),
@@ -82,7 +84,7 @@ app.get('/', (req, res) => {
   });
   
   app.get('/movies', (req, res) => {
-    res.json(topBooks);
+    res.json(topMovies);
   });
   
   
