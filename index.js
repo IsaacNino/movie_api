@@ -39,13 +39,14 @@ let topMovies = [
     "Description":'In this animated adaptation of Ted Hughes\' Cold War fable, a giant alien robot (Vin Diesel) crash-lands near the small town of Rockwell, Maine, in 1957. Exploring the area, a local 9-year-old boy, Hogarth, discovers the robot, and soon forms an unlikely friendship with him. When a paranoid government agent, Kent Mansley, becomes determined to destroy the robot, Hogarth and beatnik Dean McCoppin (Harry Connick Jr.) must do what they can to save the misunderstood machine.',
     "Genre": {
       "Name": 'Adventure',
-      "Description": "Embark on a journey or quest, often in search of treasure, knowledge, or self-discovery. Get transported to exotic locations, witness action-packed sequences, and feel a sense of danger and excitement."
+      "Description": "Embark on a journey or quest, in search of treasure, knowledge, or self-discovery. Get transported to exotic locations, witness action-packed sequences, and feel a sense of danger and excitement."
     },
     "Rating": 'PG',
     "Director": {
       "Name": "Brad Bird",
       "Bio": "Phillip Bradley \"Brad\" Bird is an American director, screenwriter, animator, producer and occasional voice actor, known for both animated and live-action films. On a tour of the Walt Disney Studios at age 11, he announced that someday he would become part of its animation team, and soon afterward began work on his own 15-minute animated short. Within two years, Bird had completed his animation, which impressed the cartoon company. By age 14, barely in high school, Bird was mentored by the animator Milt Kahl, one of Disney's legendary Nine Old Men. ",
       "Birth": "1957",
+      "Death": ""
     },
     "ImageUrl":'https://en.wikipedia.org/wiki/File:The_Iron_Giant_poster.JPG',
     "Year": '1999',
@@ -62,6 +63,7 @@ let topMovies = [
       "Name": "Ari Aster",
       "Bio": "Ari Aster is an American film director, screenwriter, and producer. He is known for writing and directing the A24 horror films Hereditary (2018) and Midsommar (2019). Aster was born into a Jewish family in New York City on July 15, 1986, the son of a poet mother and musician father. He has a younger brother. He recalled going to see his first movie, Dick Tracy, when he was four years old. The film featured a scene where a character fired a Tommy gun in front of a wall of fire. Aster reportedly jumped from his seat and ran six New York City blocks while his mother tried to catch him. In his early childhood, Aster's family briefly lived in England, where his father opened a jazz nightclub in Chester. Aster enjoyed living there, but the family returned to the U.S. and settled in New Mexico when he was 10 years old.",
       "Birth": "1986",
+      "Death": "N/A"
     },
     "ImageUrl":'https://upload.wikimedia.org/wikipedia/en/d/d9/Hereditary.png',
     "Year": '2018',
@@ -78,6 +80,7 @@ let topMovies = [
       "Name": "Victor Salva",
       "Bio": "Born in Martinez, California, 20 miles outside San Francisco, Victor Salva had written and directed over 20 short and feature-length films before graduating from high school. In the mid-'80s his 37-minute short Something in the Basement (1986) took first place in the fiction category at the Sony/AFI Home Video Competition. A horror allegory about a young boy awaiting his brother's return from a bloody war, this highly acclaimed short went on to win several national awards (including a Bronze Plaque at the Chicago International Film festival) and brought Salva to the attention of Francis Ford Coppola. Coppola then produced Salva's first theatrical feature, Clownhouse (1989), which Salva again wrote and directed. Using the talented cast of his award-winning short, Salva called the film \"a campfire story.\"",
       "Birth": "1958",
+      "Death": "N/A"
     },
     "ImageUrl":'https://en.wikipedia.org/wiki/File:Jeepers_Creepers_(2001_film)_poster.jpg',
     "Year": '2001',
@@ -94,6 +97,7 @@ let topMovies = [
       "Name": "Haruo Sotozaki",
       "Bio": "Haruo Sotozaki is known for Demon Slayer the Movie: Mugen Train (2020), Demon Slayer: Kimetsu no Yaiba (2019) and Cowboy Bebop: The Movie (2001).",
       "Birth": "Unknown",
+      "Death": "N/A"
     },
     "ImageUrl":'https://en.wikipedia.org/wiki/File:Kimetsu_no_Yaiba_Mugen_Ressha_Hen_Poster.jpg',
     year: '2021',
@@ -110,6 +114,7 @@ let topMovies = [
       "Name": "Kevin Smith",
       "Bio": "Kevin Patrick Smith is an American filmmaker, actor, comedian, comic book writer, author, YouTuber, and podcaster. He came to prominence with the low-budget comedy buddy film Clerks (1994), which he wrote, directed, co-produced, and acted in as the character Silent Bob of stoner duo Jay and Silent Bob, characters who also appeared in Smith's later films Mallrats (1995), Chasing Amy (1997), Dogma (1999), Jay and Silent Bob Strike Back (2001), Clerks II (2006), Jay and Silent Bob Reboot (2019), and Clerks III (2022) which are set primarily in his home state of New Jersey. ",
       "Birth": "1970",
+      "Death": "N/A"
     },
     "ImageUrl":'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFGihbc36pR09tluBIB16bCYkIXPGzlhBpVhF9iOiLMqQYfS4h',
     "Year": '2001',
@@ -126,6 +131,7 @@ let topMovies = [
       "Name": "Joel Crawford",
       "Bio": "In 2006, Joel Crawford joined DreamWorks Animation, where he served as a story artist on Shrek Forever After, Rise of the Guardians, the Kung Fu Panda trilogy, and Bee Movie.[1] In October 2017, Crawford signed on to direct The Croods: A New Age, replacing both Kirk DeMicco and Chris Sanders as director. In November 2017, Crawford directed Trolls Holiday, a half-hour Christmas-themed spinoff of the 2016 film Trolls. In March 2021, Crawford replaced Bob Persichetti as director of the 2022 film Puss in Boots: The Last Wish.",
       "Birth": "Unknown",
+      "Death": "N/A"
     },
     "ImageUrl":'https://en.wikipedia.org/wiki/File:Puss_in_Boots_The_Last_Wish_poster.jpg',
     "Year": '2022',
@@ -142,6 +148,7 @@ let topMovies = [
       "Name": "Damian Lichtenstein",
       "Bio": "Demian has amassed a vast body of work in the music video industry since receiving his BFA from New York University in 1988, leading to his current status as a major up-and-comer in Feature Film Direction. Some past projects include directing Music Videos for Sting & Eric Clapton, Grandmaster Caz, Shabba Ranks, Queen Latifah, West of Eden (Best Independent Video/MTV 1987), Cypress Hill, Gloria Estefan, Sony, Warner Bros, Columbia Pictures, MCA, Epic, Island, Atlantic, Tommy Boy, IRS Records, World Hunger Project, and the Multiple Sclerosis Society. Demian was Chairman of the New York Independent Film Coalition for two years, and has directed, produced, written, photographed, taped and/or recorded audio on over 225 features, short films, music videos, commercials and concerts.",
       "Birth": "Unknown",
+      "Death": "N/A"
     },
     "ImageUrl":'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRy5iFAq4PO8wwP8TCU9tSnROw8ItRZHiqQ3xMMke7JDkJqhq1v',
     "Year": '2001',
@@ -158,6 +165,7 @@ let topMovies = [
       "Name": "Satoshi Kon",
       "Bio": "Satoshi Kon was born in 1963. He studied at the Musashino College of the Arts. He began his career as a Manga artist. He then moved to animation and worked as a background artist on many films (including Roujin Z (1991) by 'Katsuhiro Otomo'). Then, in 1995, he wrote an episode of the anthology film Memories (1995) (this Episode was \"Magnetic Rose\"). In 1997, he directed his first feature film: the excellent Perfect Blue (1997). In 2001, he finished work on his second feature film, Millennium Actress (2001) (aka Millennium Actress).",
       "Birth": "1963",
+      "Death": "2010"
     },
     "ImageUrl":'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8c6mJdQLbkEWaAy4jM-Tx1aRWUJ8MhsyAV-f_hMsvDwguw2gF',
     "Year": '1997',
@@ -174,6 +182,7 @@ let topMovies = [
       "Name": "Ti West",
       "Bio": "Ti West is most notable for directing horror films, as well as being an actor, writer, producer, and editor. Ti broke out, after directing various projects, in 2009, when he directed two feature films - 2009's The House Of The Devil and Cabin Fever 2: Spring Fever. Ti later directed, with his production company Glass Eye Pix, the widely popular 2011 horror film The Innkeepers, which starred actors Sara Paxton, Pat Healy and Kelly McGillis. Ti also starred as \"Tariq\" in Adam Wingard and Simon Barrett's horror film, You're Next (2011). More recently he has been a director for MTV's Scream and Fox's The Exorcist. His acting roles include him portraying \"Dave\" in Joe Swanberg's rom-com, Drinking Buddies (2013) and a cameo as \"Favorite Teacher\" in The House Of The Devil.",
       "Birth": "1980",
+      "Death": "N/A"
     },
     "ImageUrl":'https://upload.wikimedia.org/wikipedia/en/5/5b/Pearl_theatricalposter.jpg',
     "Year": '2022',
@@ -190,11 +199,58 @@ let topMovies = [
       "Name": "Wes Anderson",
       "Bio": "Wesley Wales Anderson was born in Houston, Texas. His mother, Texas Ann (Burroughs), is an archaeologist turned real estate agent, and his father, Melver Leonard Anderson, worked in advertising and PR. He has two brothers, Eric and Mel. Anderson's parents divorced when he was a young child, an event that he described as the most crucial event of his brothers and his growing up. During childhood, Anderson also began writing plays and making super-8 movies. ",
       "Birth": "1969",
+      "Death": "N/A"
     },
     "ImageUrl":'https://upload.wikimedia.org/wikipedia/en/2/23/IsleOfDogsFirstLook.jpg',
     "Year": '2018',
   }
 ];
+
+//Read (GET) Request
+app.get('/topMovies', (req, res) => { //reuests data for all movies
+  res.status(200).json(topMovies); //returns data as JSON
+});
+
+//Read (GET) Request
+app.get('/topMovies/:title', (req, res) => { //reuests data for a specific movies
+const { title } = req.params; //object destructuring to get the title from the request
+const topMovie = topMovies.find( topMovie => topMovie.title === title ); //finds the movie with the title that matches the request
+
+if (topMovie) { //if the movie exists
+  res.status(200).json(topMovie); //return the movie as JSON
+} else { //if the movie doesn't exist
+  res.status(400).send('Movie not found!'); //return an error
+}
+});
+
+//Read (GET) Request
+app.get('/topMovies/genre/:genreName', (req, res) => { // requests data for a specific genre
+const { genreName } = req.params; // object destructuring to get the genre name from the request
+const genre = topMovies.find( topMovie => topMovie.Genre.Name === genreName ).Genre; // finds the genre with the name that matches the request
+
+if (genre) { // if the genre exists
+  res.status(200).json(genre); // return the genre as JSON
+} else { // if the genre doesn't exist
+  res.status(400).send('Genre not found!'); // return an error
+}
+});
+
+//Read (GET) Request
+app.get('/topMovies/directors/:directorName', (req, res) => { // requests data for a specific director
+const { directorName } = req.params; // object destructuring to get the director name from the request
+const director = topMovies.find( topMovie => topMovie.Director.Name === directorName ).Director; // finds the director with the name that matches the request
+
+if (director) { // if the director exists
+  res.status(200).json(director); // return the director as JSON
+} else { // if the director doesn't exist
+  res.status(400).send('Director not found!'); // return an error
+}
+});
+
+//Read (GET) Request
+app.get('/documentation', (req, res) => {                  
+res.sendFile('public/documentation.html', { root: __dirname });
+});
 
 //Create (POST) Data
 app.post('/users' , (req, res) => { //creates a new user
@@ -207,6 +263,20 @@ app.post('/users' , (req, res) => { //creates a new user
 
   } else {
     res.status(400).send('User must have a name!'); //return an error
+  }
+});
+
+//Create (POST) Data
+app.post('/users/:id/:movieTitle', (req, res) => { //adds a movie to a user's favorites
+  const { id, movieTitle } = req.params; //object destructuring to get the id from the request
+
+  let user = users.find( user => user.id == id ); //finds the user with the id that matches the request
+  
+  if (user) { //if the user exists
+    user.favoriteMovies.push(movieTitle); //add the movie to the user's favorite movies
+    res.status(200).send(`${movieTitle} added to user ${id}'s favorites!`); //return a success message
+  } else { //if the user doesn't exist
+    res.status(400).send('User not found!'); //return an error
   }
 });
 
@@ -225,22 +295,8 @@ app.put('/users/:id' , (req, res) => { //creates a new user
   }
 });
 
-//Create (POST) Data
-app.post('/users/:id/:movieTitle', (req, res) => { //adds a movie to a user's favorites
-  const { id, movieTitle } = req.params; //object destructuring to get the id from the request
-
-  let user = users.find( user => user.id == id ); //finds the user with the id that matches the request
-  
-  if (user) { //if the user exists
-    user.favoriteMovies.push(movieTitle); //add the movie to the user's favorite movies
-    res.status(200).send(`${movieTitle} added to user ${id}'s favorites!`); //return a success message
-  } else { //if the user doesn't exist
-    res.status(400).send('User not found!'); //return an error
-  }
-});
-
 //Delete (DELETE) Data
-app.delete('/users/:id/:movieTitle', (req, res) => { //adds a movie to a user's favorites
+app.delete('/users/:id/:movieTitle', (req, res) => { //removes a movie from a user's favorites
   const { id, movieTitle } = req.params; //object destructuring to get the id from the request
 
   let user = users.find( user => user.id == id ); //finds the user with the id that matches the request
@@ -265,56 +321,6 @@ app.delete('/users/:id', (req, res) => { // deletes a user
   } else { //  if the user doesn't exist
     res.status(400).send('User not found!'); // return an error
   }
-});
-
-//Read (GET) Request
-app.get('/topMovies', (req, res) => { //reuests data for all movies
-    res.status(200).json(topMovies); //returns data as JSON
-});
-
-//Read (GET) Request
-app.get('/topMovies/:title', (req, res) => { //reuests data for a specific movies
-  const { title } = req.params; //object destructuring to get the title from the request
-  const topMovie = topMovies.find( topMovie => topMovie.title === title ); //finds the movie with the title that matches the request
-
-  if (topMovie) { //if the movie exists
-    res.status(200).json(topMovie); //return the movie as JSON
-  } else { //if the movie doesn't exist
-    res.status(400).send('Movie not found!'); //return an error
-  }
-});
-
-//Read (GET) Request
-app.get('/topMovies/genre/:genreName', (req, res) => { // requests data for a specific genre
-  const { genreName } = req.params; // object destructuring to get the genre name from the request
-  const genre = topMovies.find( topMovie => topMovie.Genre.Name === genreName ).Genre; // finds the genre with the name that matches the request
-
-  if (genre) { // if the genre exists
-    res.status(200).json(genre); // return the genre as JSON
-  } else { // if the genre doesn't exist
-    res.status(400).send('Genre not found!'); // return an error
-  }
-});
-
-//Read (GET) Request
-app.get('/topMovies/directors/:directorName', (req, res) => { // requests data for a specific director
-  const { directorName } = req.params; // object destructuring to get the director name from the request
-  const director = topMovies.find( topMovie => topMovie.Director.Name === directorName ).Director; // finds the director with the name that matches the request
-
-  if (director) { // if the director exists
-    res.status(200).json(director); // return the director as JSON
-  } else { // if the director doesn't exist
-    res.status(400).send('Director not found!'); // return an error
-  }
-});
-
-//Read (GET) Request
-app.get('/documentation', (req, res) => {                  
-  res.sendFile('public/documentation.html', { root: __dirname });
-});
-
-app.get('/movies', (req, res) => {
-  res.json(topMovies);
 });
 
 //error handling
