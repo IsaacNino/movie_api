@@ -1,11 +1,16 @@
-
-
 const express = require('express'),
     morgan = require('morgan'),
     app = express(),
     bodyParser = require('body-parser'),
     methodOverride = require('method-override'),
-    uuid = require('uuid');
+    uuid = require('uuid'),
+    mongoose = require('mongoose'),
+    Models = require('./models.js');
+
+const Movies = Models.Movie;
+const Users = Models.User;
+
+mongoose.connect('mongodb://localhost:27017/themovieapi', { useNewUrlParser: true, useUnifiedTopology: true});
 
 app.use(express.static('public'));
 app.use(morgan('common'));
@@ -15,7 +20,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(methodOverride());
 
-let users = [
+/* let users = [
   {
     id: 1,
     name: "Brian",
@@ -31,9 +36,9 @@ let users = [
     name: "Cody",
     favoriteMovies: []
   },
-];
+]; */
 
-let topMovies = [
+/* let topMovies = [
   {
     "Title": 'The Iron Giant',
     "Description":'In this animated adaptation of Ted Hughes\' Cold War fable, a giant alien robot (Vin Diesel) crash-lands near the small town of Rockwell, Maine, in 1957. Exploring the area, a local 9-year-old boy, Hogarth, discovers the robot, and soon forms an unlikely friendship with him. When a paranoid government agent, Kent Mansley, becomes determined to destroy the robot, Hogarth and beatnik Dean McCoppin (Harry Connick Jr.) must do what they can to save the misunderstood machine.',
@@ -204,48 +209,7 @@ let topMovies = [
     "ImageUrl":'https://upload.wikimedia.org/wikipedia/en/2/23/IsleOfDogsFirstLook.jpg',
     "Year": '2018',
   }
-];
-
-//Read (GET) Request
-app.get('/topMovies', (req, res) => { //reuests data for all movies
-  res.status(200).json(topMovies); //returns data as JSON
-});
-
-//Read (GET) Request
-app.get('/topMovies/:title', (req, res) => { //reuests data for a specific movies
-const { title } = req.params; //object destructuring to get the title from the request
-const topMovie = topMovies.find( topMovie => topMovie.title === title ); //finds the movie with the title that matches the request
-
-if (topMovie) { //if the movie exists
-  res.status(200).json(topMovie); //return the movie as JSON
-} else { //if the movie doesn't exist
-  res.status(400).send('Movie not found!'); //return an error
-}
-});
-
-//Read (GET) Request
-app.get('/topMovies/genre/:genreName', (req, res) => { // requests data for a specific genre
-const { genreName } = req.params; // object destructuring to get the genre name from the request
-const genre = topMovies.find( topMovie => topMovie.Genre.Name === genreName ).Genre; // finds the genre with the name that matches the request
-
-if (genre) { // if the genre exists
-  res.status(200).json(genre); // return the genre as JSON
-} else { // if the genre doesn't exist
-  res.status(400).send('Genre not found!'); // return an error
-}
-});
-
-//Read (GET) Request
-app.get('/topMovies/directors/:directorName', (req, res) => { // requests data for a specific director
-const { directorName } = req.params; // object destructuring to get the director name from the request
-const director = topMovies.find( topMovie => topMovie.Director.Name === directorName ).Director; // finds the director with the name that matches the request
-
-if (director) { // if the director exists
-  res.status(200).json(director); // return the director as JSON
-} else { // if the director doesn't exist
-  res.status(400).send('Director not found!'); // return an error
-}
-});
+]; */
 
 //Read (GET) Request
 app.get('/documentation', (req, res) => {                  
@@ -253,74 +217,75 @@ res.sendFile('public/documentation.html', { root: __dirname });
 });
 
 //Create (POST) Data
-app.post('/users' , (req, res) => { //creates a new user
-  const newUser = req.body; //gets the data from the request body
-
-  if (newUser.name) { //if the user has a name
-    newUser.id = uuid.v4(); //assign a unique ID to the user
-    users.push(newUser); //add the user to the array
-    res.status(201).json(newUser); //return the user as JSON
-
-  } else {
-    res.status(400).send('User must have a name!'); //return an error
-  }
+app.post('/users', (req, res) => { //creates a new user
+  Users.findOne({ Username: req.body.Username }) //finds a user with the username from the request body
+  .then((user) => { 
+    if (user) { // if the user exists
+      return res.status(400).send(req.body.Username + 'alread exists');  //return an error stating the user already exists
+    } else { //if the user doesn't exist
+      Users
+        .create({ //create the user
+          Username: req.body.Username, //get the username data from the request body
+          Password: req.body.Password, //get the password data from the request body
+          Email: req.body.Email, //get the email data from the request body
+          Birthday: req.body.Birthday //get the birthday data from the request body
+        })
+        .then((user) => { res.status(201).json(user) }) //return the user as JSON
+        .catch((error) => {  //if there's an error
+          console.error(error); //log the error
+          res.status(500).send('Error: ' + error); //return an error
+        })
+    }
+  })
+  .catch((error) => { //if there's an error
+    console.error(error); //log the error
+    res.status(500).send('Error: ' + error); //return an error
+  });
 });
 
-//Create (POST) Data
-app.post('/users/:id/:movieTitle', (req, res) => { //adds a movie to a user's favorites
-  const { id, movieTitle } = req.params; //object destructuring to get the id from the request
-
-  let user = users.find( user => user.id == id ); //finds the user with the id that matches the request
-  
-  if (user) { //if the user exists
-    user.favoriteMovies.push(movieTitle); //add the movie to the user's favorite movies
-    res.status(200).send(`${movieTitle} added to user ${id}'s favorites!`); //return a success message
-  } else { //if the user doesn't exist
-    res.status(400).send('User not found!'); //return an error
-  }
+// Get (READ) all users
+app.get('/users', (req, res) => { //requests data for all users
+  Users.find() //finds all users
+  .then((users) => { //if the users are found 
+    res.status(201).json(users); //return the users as JSON
+  })
+  .catch((err) => { //if there's an error
+    console.error(err); //log the error
+    res.status(500).send('Error: ' + err); //return an error
+  });
 });
 
-//Update (PUT) Data
-app.put('/users/:id' , (req, res) => { //creates a new user
-  const { id } = req.params; //object destructuring to get the id from the request
-  const updatedUser = req.body; //gets the data from the request body
-
-  let user = users.find( user => user.id == id ); //finds the user with the id that matches the request
-  
-  if (user) { //if the user exists
-    user.name = updatedUser.name; //update the user's name
-    res.status(200).json(user); //return the user as JSON
-  } else { //if the user doesn't exist
-    res.status(400).send('User not found!'); //return an error
-  }
+//Get (READ) a user by username
+app.get('/users/:Username', (req, res) => { //requests data for a specific user
+  Users.findOne({ Username: req.params.Username }) //finds the user with the username that matches the request
+  .then((user) => { //if the user is found
+    res.json(user) //return the user as JSON
+  })
+  .catch((error) => { //if there's an error
+    console.error(err); //log the error
+    res.status(500).send('Error: ' + error); //return an error
+  });
 });
 
-//Delete (DELETE) Data
-app.delete('/users/:id/:movieTitle', (req, res) => { //removes a movie from a user's favorites
-  const { id, movieTitle } = req.params; //object destructuring to get the id from the request
-
-  let user = users.find( user => user.id == id ); //finds the user with the id that matches the request
-  
-  if (user) { //if the user exists
-    user.favoriteMovies = user.favoriteMovies.filter( title => title !== movieTitle ); //remove the movie from the user's favorite movies
-    res.status(200).send(`${movieTitle} has been removed from user ${id}'s favorites!`); //return a success message
-  } else { //if the user doesn't exist
-    res.status(400).send('User not found!'); //return an error
-  }
-});
-
-//Delete (DELETE) Data
-app.delete('/users/:id', (req, res) => { // deletes a user
-  const { id } = req.params; // object destructuring to get the id from the request
-
-  let user = users.find( user => user.id !== id ); // filters the user with the id that matches the request
-
-  if (user) { // if the user exists
-    user.favoriteMovies = user.favoriteMovies.filter( title => title != movieTitle ); // remove the movie from the user's favorite movies
-    res.status(200).send(`User ${id} has been deleted!`); // return a success message
-  } else { //  if the user doesn't exist
-    res.status(400).send('User not found!'); // return an error
-  }
+//Update (PUT) User Data
+app.put('/users/:Username', (req, res) => { //updates a user's data
+  Users.findOneAndUpdate({ Username: req.params.Username }, { $set: //finds the user with the username that matches the request and updates the user's data
+    {
+      Username: req.body.Username, //get the username data from the request body
+      Password: req.body.Password, //get the password data from the request body
+      Email: req.body.Email, //get the email data from the request body
+      Birthday: req.body.Birthday //get the birthday data from the request body
+    }
+  },
+  { new: true }, // This line makes sure that the updated document is returned
+  (err, updatedUser) => { //callback function
+    if (err) { //if there's an error
+      console.error(err); //log the error
+      res.status(500).send('Error: ' + err); //return an error
+    } else { //if there's no error
+      res.json(updatedUser); //return the updated user as JSON
+    }
+  });
 });
 
 //error handling
