@@ -5,10 +5,9 @@ const express = require('express'),
     methodOverride = require('method-override'),
     uuid = require('uuid'),
     mongoose = require('mongoose'),
-    Models = require('./models.js');
-
-const Movies = Models.Movie;
-const Users = Models.User;
+    Models = require('./models.js'),
+    Movies = Models.Movie,
+    Users = Models.User;
 
 mongoose.connect('mongodb://localhost:27017/themovieapi', { useNewUrlParser: true, useUnifiedTopology: true});
 
@@ -216,6 +215,103 @@ app.get('/documentation', (req, res) => {
 res.sendFile('public/documentation.html', { root: __dirname });
 });
 
+// Get (READ) all users
+app.get('/users', (req, res) => { //requests data for all users
+  Users.find() //finds all users
+  .then((users) => { //if the users are found 
+    res.status(201).json(users); //return the users as JSON
+  })
+  .catch((err) => { //if there's an error
+    console.error(err); //log the error
+    res.status(500).send('Error: ' + err); //return an error
+  });
+});
+
+//Get (READ) a user by username
+app.get('/users/:Username', (req, res) => { //requests data for a specific user
+  Users.findOne({ Username: req.params.Username }) //finds the user with the username that matches the request
+  .then((user) => { //if the user is found
+    res.json(user) //return the user as JSON
+  })
+  .catch((error) => { //if there's an error
+    console.error(err); //log the error
+    res.status(500).send('Error: ' + error); //return an error
+  });
+});
+
+//Get (READ) all movies 
+app.get('/movies', (req, res) => { //requests data for all movies
+  Movies.find() //finds all movies
+  .then((movies) => { //if the movies are found
+    res.status(201).json(movies); //return the movies as JSON
+  })
+  .catch((err) => { //if there's an error
+    console.error(err); //log the error
+    res.status(500).send('Error: ' + err); //return an error
+  });
+});
+
+//Get (READ) a movie by title
+app.get('/movies/:Title', (req, res) => { //requests data for a specific movie
+  Movies.findOne({ Title: req.params.Title }) //finds the movie with the title that matches the request
+  .then((movie) => { //if the movie is found
+    res.json(movie) //return the movie as JSON
+  })
+  .catch((error) => { //if there's an error
+    console.error(err); //log the error
+    res.status(500).send('Error: ' + error); //return an error
+  });
+});
+
+//Get (READ) movie genre by name
+app.get('/movies/genres/:Name', (req, res) => { //requests data for a specific movie genre
+  Movies.findOne({ 'Genre.Name': req.params.Name }) //finds the movie genre with the name that matches the request
+  .then((movie) => { //if the movie genre is found
+    res.json(movie.Genre) //return the movie genre as JSON
+  })
+  .catch((error) => { //if there's an error
+    console.error(err); //log the error
+    res.status(500).send('Error: ' + error); //return an error
+  });
+});
+
+//Get (READ) movie director by name
+app.get('/movies/directors/:Name', (req, res) => { //requests data for a specific movie director
+  Movies.findOne({ 'Director.Name': req.params.Name }) //finds the movie director with the name that matches the request
+  .then((movie) => { //if the movie director is found
+    res.json(movie.Director) //return the movie director as JSON
+  })
+  .catch((error) => { //if there's an error
+    console.error(err); //log the error
+    res.status(500).send('Error: ' + error); //return an error
+  });
+});
+
+//Update (PUT) User Data
+app.put("/users/:Username", (req, res) => { //updates a user's data
+  Users.findOneAndUpdate(
+    { Username: req.params.Username },
+    { $set: { //finds the user with the username that matches the request and updates the user's data
+        Username: req.body.Username, //get the username data from the request body
+        Password: req.body.Password, //get the password data from the request body
+        Email: req.body.Email, //get the email data from the request body
+        Birthday: req.body.Birthday, }, //get the birthday data from the request body
+    },
+    { new: true }
+  )
+    .then((updatedUser) => {
+      if (!updatedUser) {
+        return res.status(400).send(req.body.Username + " doesn't exist");
+      } else {
+        res.json(updatedUser);
+      }
+    }) 
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send("Error: " + error);
+    });
+});
+
 //Create (POST) Data
 app.post('/users', (req, res) => { //creates a new user
   Users.findOne({ Username: req.body.Username }) //finds a user with the username from the request body
@@ -243,49 +339,50 @@ app.post('/users', (req, res) => { //creates a new user
   });
 });
 
-// Get (READ) all users
-app.get('/users', (req, res) => { //requests data for all users
-  Users.find() //finds all users
-  .then((users) => { //if the users are found 
-    res.status(201).json(users); //return the users as JSON
-  })
-  .catch((err) => { //if there's an error
-    console.error(err); //log the error
-    res.status(500).send('Error: ' + err); //return an error
-  });
-});
-
-//Get (READ) a user by username
-app.get('/users/:Username', (req, res) => { //requests data for a specific user
-  Users.findOne({ Username: req.params.Username }) //finds the user with the username that matches the request
-  .then((user) => { //if the user is found
-    res.json(user) //return the user as JSON
+//Add a movie to a user's favorites
+app.post('/users/:Username/movies/:MovieID', (req, res) => { //adds a movie to a user's list of favorites
+  Users.findOneAndUpdate({ Username: req.params.Username }, { //finds the user with the username that matches the request
+    $push: { FavoriteMovies: req.params.MovieID } //adds the movie to the user's list of favorites
+  },
+  { new: true }) //returns the updated document
+  .then((updatedUser) => { //if the user is found
+    res.json(updatedUser); //return the user as JSON
   })
   .catch((error) => { //if there's an error
-    console.error(err); //log the error
+    console.error(error); //log the error
     res.status(500).send('Error: ' + error); //return an error
   });
 });
 
-//Update (PUT) User Data
-app.put('/users/:Username', (req, res) => { //updates a user's data
-  Users.findOneAndUpdate({ Username: req.params.Username }, { $set: //finds the user with the username that matches the request and updates the user's data
-    {
-      Username: req.body.Username, //get the username data from the request body
-      Password: req.body.Password, //get the password data from the request body
-      Email: req.body.Email, //get the email data from the request body
-      Birthday: req.body.Birthday //get the birthday data from the request body
-    }
+//Delete a movie from a user's favorites
+app.delete('/users/:Username/movies/:MovieID', (req, res) => { //adds a movie to a user's list of favorites
+  Users.findOneAndUpdate({ Username: req.params.Username }, { //finds the user with the username that matches the request
+    $pull: { FavoriteMovies: req.params.MovieID } //adds the movie to the user's list of favorites
   },
-  { new: true }, // This line makes sure that the updated document is returned
-  (err, updatedUser) => { //callback function
-    if (err) { //if there's an error
+  { new: true }) //returns the updated document
+  .then((updatedUser) => { //if the user is found
+    res.json(updatedUser); //return the user as JSON
+  })
+  .catch((error) => { //if there's an error
+    console.error(error); //log the error
+    res.status(500).send('Error: ' + error); //return an error
+  });
+});
+
+//Delete (DELETE) User by username
+app.delete('/users/:Username', (req, res) => { //deletes a user
+  Users.findOneAndRemove({ Username: req.params.Username }) //finds the user with the username that matches the request
+    .then((user) => { //if the user is found
+      if (!user) { //if the user doesn't exist
+        res.status(400).send(req.params.Username + ' was not found'); //return an error stating the user doesn't exist
+      } else { //if the user exists
+        res.status(200).send(req.params.Username + ' was deleted.'); //return a message stating the user was deleted
+      }
+    })
+    .catch((err) => { //if there's an error
       console.error(err); //log the error
       res.status(500).send('Error: ' + err); //return an error
-    } else { //if there's no error
-      res.json(updatedUser); //return the updated user as JSON
-    }
-  });
+    });
 });
 
 //error handling
