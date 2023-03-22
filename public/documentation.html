@@ -15,7 +15,7 @@
         <h4>API Instructions:</h4>
             <p>This app will guide you through a database of some amazing films.</p>
             <p>Users will find information about several movies, directors, and genres. </p>
-            <p>Users can sign up, update their personal info, and create a list of their favourite movies. </p>
+            <p>Users can sign up, update their personal info, and create a list of their favorite movies. </p>
         <h4>Endpoint Documentation:</h4>
         <table>
             <thead>
@@ -29,25 +29,25 @@
             <tbody>
                 <tr>
                     <td>Return a list of ALL movies to the user</td>
-                    <td>/topMovies</td>
+                    <td>/movies</td>
                     <td>GET</td>
                     <td>A JSON object containing data about all movies</td>
                 </tr>
                 <tr>
                     <td>Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user</td>
-                    <td>/topMovies/title</td>
+                    <td>/movies/:Title</td>
                     <td>GET</td>
                     <td>A JSON object containing data about a single movie containing the data above</td>
                 </tr>
                 <tr>
                     <td>Return data about a genre (description) by name/title (e.g., “Thriller”)</td>
-                    <td>/topMovies/genre/genreName</td>
+                    <td>/movies/genres/:Name</td>
                     <td>GET</td>
                     <td>A JSON object containing data about genre</td>
                 </tr>
                 <tr>
                     <td>Return data about a director (bio, birth year, death year) by name</td>
-                    <td>/topMovies/directors/directorName</td>
+                    <td>/movies/directors/:Name</td>
                     <td>GET</td>
                     <td>A JSON object containing data about director</td>
                 </tr>
@@ -59,26 +59,25 @@
                 </tr>
                 <tr>
                     <td>Allow users to add a movie to their list of favorites (displays a message stating that a movie has been added)</td>
-                    <td>/users/id/movieTitle</td>
+                    <td>/users/:Username/movies/:MovieID</td>
                     <td>POST</td>
                     <td>A message informing the user that movie was added to favourites list</td>
                 </tr>
                 <tr>
                   <td>Allow users to update their user info (username)</td>
-                  <td>/users/id</td>
+                  <td>/users/:Username</td>
                   <td>PUT</td>
                   <td>A message informing the user that their information was updated</td>
               </tr>
                 <tr>
                     <td>Allow users to remove a movie from their list of favorites (display text that a movie has been removed—more on this later)</td>
-                    <td>/users/id/movieTitle
-                    </td>
+                    <td>/users/:Username/movies/:MovieID</td>
                     <td>DELETE</td>
                     <td>A message informing the user that a movie was removed from their favorites</td>
                 </tr>
                 <tr>
                     <td>Allow existing users to deregister (displays text that a user email has been removed)</td>
-                    <td>/users/id</td>
+                    <td>/users/:Username</td>
                     <td>DELETE</td>
                     <td>A message informing the user that deletion of their account was successful</td>
                 </tr>
