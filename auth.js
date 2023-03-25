@@ -14,22 +14,22 @@ let generateJWTToken = (user) => { // Create a function that generates a JWT
 }
 
 // POST login
-module.exports = (router) => { // Export the router
-    router.post('/login', (req, res) => { // Create a POST route for /login
-        passport.authenticate('local', { session: false }, (error, user, info) => { // Authenticate the user
-            if (error || !user) { // If there is an error or the user is not found
-                return res.status(400).json({ // Return a 400 status code
-                    message: 'Something is not right', // Return a message
-                    user: user // Return the user
-                });
-            }
-            req.login(user, { session: false }, (error) => { // Log the user in
-                if (error) { // If there is an error
-                    res.send(error); // Send the error
-                }
-                let token = generateJWTToken(user.toJSON()); // Generate a JWT
-                return res.json({ user, token }); // Return the user and the JWT
-            });
-        })(req, res);
+module.exports = (router) => {
+    router.post('/login', (req, res) => { //When a POST request is made to the /login endpoint
+      passport.authenticate('local', { session: false }, (error, user, info) => { //Authenticate the user using the local strategy
+        if (error || !user) { //If there is an error or the user is not found
+          return res.status(400).json({ //Return a 400 status code and a JSON object with the error message
+            message: 'Something is not right', //The error message
+            user: user //The user
+          }); //Return a 400 status code and a JSON object with the error message
+        }
+        req.login(user, { session: false }, (error) => { //If there is no error, log the user in
+          if (error) { //If there is an error 
+            res.send(error); //Send the error
+          }
+          let token = generateJWTToken(user.toJSON()); //Generate a JWT
+          return res.json({ user, token }); //Return a JSON object with the user and the token
+        });
+      })(req, res); //Call the passport authentication function
     });
-}
+  }
