@@ -11,10 +11,6 @@ const express = require('express'), // Import express
 
 mongoose.connect('mongodb://localhost:27017/themovieapi', { useNewUrlParser: true, useUnifiedTopology: true}); // Connect to the database
 
-let auth = require('./auth')(app); // Import the auth.js file and pass it the app variable
-const passport = require('passport'); // Import passport
-require('./passport'); // Import the passport.js file
-
 app.use(express.static('public')); // Serve static files from the public folder
 app.use(morgan('common')); // Log all requests to the console
 app.use(bodyParser.urlencoded({ // Use body-parser to parse the request body
@@ -22,6 +18,11 @@ app.use(bodyParser.urlencoded({ // Use body-parser to parse the request body
 }));
 app.use(bodyParser.json()); // Use body-parser to parse the request body
 app.use(methodOverride());// Use method-override to allow for the use of HTTP verbs such as PUT and DELETE in places where the client doesn't support it
+
+let auth = require('auth')(app); // Import the auth.js file and pass it the app variable
+require('./auth'); // Import the auth.js file
+const passport = require('passport'); // Import passport
+require('./passport'); // Import the passport.js file
 
 /* let users = [
   {
