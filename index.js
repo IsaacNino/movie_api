@@ -1,23 +1,28 @@
-const express = require('express'),
-    morgan = require('morgan'),
-    app = express(),
-    bodyParser = require('body-parser'),
-    methodOverride = require('method-override'),
-    uuid = require('uuid'),
-    mongoose = require('mongoose'),
-    Models = require('./models.js'),
-    Movies = Models.Movie,
-    Users = Models.User;
+const express = require('express'), // Import express
+    morgan = require('morgan'), // Import morgan
+    app = express(), // Create an instance of express
+    bodyParser = require('body-parser'), // Import body-parser
+    methodOverride = require('method-override'), // Import method-override
+    uuid = require('uuid'), // Import uuid
+    mongoose = require('mongoose'), // Import mongoose
+    Models = require('./models.js'), // Import the models.js file
+    Movies = Models.Movie, // Movies is a variable that represents the Movie model
+    Users = Models.User; // Users is a variable that represents the User model
 
-mongoose.connect('mongodb://localhost:27017/themovieapi', { useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://localhost:27017/themovieapi', { useNewUrlParser: true, useUnifiedTopology: true}); // Connect to the database
 
-app.use(express.static('public'));
-app.use(morgan('common'));
-app.use(bodyParser.urlencoded({
+app.use(express.static('public')); // Serve static files from the public folder
+app.use(morgan('common')); // Log all requests to the console
+app.use(bodyParser.urlencoded({ // Use body-parser to parse the request body
   extended: true
 }));
-app.use(bodyParser.json());
-app.use(methodOverride());
+app.use(bodyParser.json()); // Use body-parser to parse the request body
+app.use(methodOverride());// Use method-override to allow for the use of HTTP verbs such as PUT and DELETE in places where the client doesn't support it
+
+let auth = require('./auth')(app); // Import the auth.js file and pass it the app variable
+
+const passport = require('passport'); // Import passport
+require('./passport'); // Import the passport.js file
 
 /* let users = [
   {
@@ -216,7 +221,7 @@ res.sendFile('public/documentation.html', { root: __dirname });
 });
 
 // Get (READ) all users
-app.get('/users', (req, res) => { //requests data for all users
+app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) => { //requests data for all users
   Users.find() //finds all users
   .then((users) => { //if the users are found 
     res.status(201).json(users); //return the users as JSON
@@ -228,7 +233,7 @@ app.get('/users', (req, res) => { //requests data for all users
 });
 
 //Get (READ) a user by username
-app.get('/users/:Username', (req, res) => { //requests data for a specific user
+app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => { //requests data for a specific user
   Users.findOne({ Username: req.params.Username }) //finds the user with the username that matches the request
   .then((user) => { //if the user is found
     res.json(user) //return the user as JSON
@@ -240,7 +245,7 @@ app.get('/users/:Username', (req, res) => { //requests data for a specific user
 });
 
 //Get (READ) all movies 
-app.get('/movies', (req, res) => { //requests data for all movies
+app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => { //requests data for all movies and au
   Movies.find() //finds all movies
   .then((movies) => { //if the movies are found
     res.status(201).json(movies); //return the movies as JSON
@@ -252,7 +257,7 @@ app.get('/movies', (req, res) => { //requests data for all movies
 });
 
 //Get (READ) a movie by title
-app.get('/movies/:Title', (req, res) => { //requests data for a specific movie
+app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req, res) => { //requests data for a specific movie
   Movies.findOne({ Title: req.params.Title }) //finds the movie with the title that matches the request
   .then((movie) => { //if the movie is found
     res.json(movie) //return the movie as JSON
@@ -264,7 +269,7 @@ app.get('/movies/:Title', (req, res) => { //requests data for a specific movie
 });
 
 //Get (READ) movie genre by name
-app.get('/movies/genres/:Name', (req, res) => { //requests data for a specific movie genre
+app.get('/movies/genres/:Name', passport.authenticate('jwt', { session: false }), (req, res) => { //requests data for a specific movie genre
   Movies.findOne({ 'Genre.Name': req.params.Name }) //finds the movie genre with the name that matches the request
   .then((movie) => { //if the movie genre is found
     res.json(movie.Genre) //return the movie genre as JSON
@@ -276,7 +281,7 @@ app.get('/movies/genres/:Name', (req, res) => { //requests data for a specific m
 });
 
 //Get (READ) movie director by name
-app.get('/movies/directors/:Name', (req, res) => { //requests data for a specific movie director
+app.get('/movies/directors/:Name', passport.authenticate('jwt', { session: false }), (req, res) => { //requests data for a specific movie director
   Movies.findOne({ 'Director.Name': req.params.Name }) //finds the movie director with the name that matches the request
   .then((movie) => { //if the movie director is found
     res.json(movie.Director) //return the movie director as JSON
@@ -288,7 +293,7 @@ app.get('/movies/directors/:Name', (req, res) => { //requests data for a specifi
 });
 
 //Update (PUT) User Data
-app.put("/users/:Username", (req, res) => { //updates a user's data
+app.put("/users/:Username", passport.authenticate('jwt', { session: false }), (req, res) => { //updates a user's data
   Users.findOneAndUpdate(
     { Username: req.params.Username },
     { $set: { //finds the user with the username that matches the request and updates the user's data
@@ -317,7 +322,7 @@ app.post('/users', (req, res) => { //creates a new user
   Users.findOne({ Username: req.body.Username }) //finds a user with the username from the request body
   .then((user) => { 
     if (user) { // if the user exists
-      return res.status(400).send(req.body.Username + 'alread exists');  //return an error stating the user already exists
+      return res.status(400).send(req.body.Username + ' already exists');  //return an error stating the user already exists
     } else { //if the user doesn't exist
       Users
         .create({ //create the user
@@ -340,7 +345,7 @@ app.post('/users', (req, res) => { //creates a new user
 });
 
 //Add a movie to a user's favorites
-app.post('/users/:Username/movies/:MovieID', (req, res) => { //adds a movie to a user's list of favorites
+app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => { //adds a movie to a user's list of favorites
   Users.findOneAndUpdate({ Username: req.params.Username }, { //finds the user with the username that matches the request
     $push: { FavoriteMovies: req.params.MovieID } //adds the movie to the user's list of favorites
   },
@@ -355,7 +360,7 @@ app.post('/users/:Username/movies/:MovieID', (req, res) => { //adds a movie to a
 });
 
 //Delete a movie from a user's favorites
-app.delete('/users/:Username/movies/:MovieID', (req, res) => { //adds a movie to a user's list of favorites
+app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => { //adds a movie to a user's list of favorites
   Users.findOneAndUpdate({ Username: req.params.Username }, { //finds the user with the username that matches the request
     $pull: { FavoriteMovies: req.params.MovieID } //adds the movie to the user's list of favorites
   },
@@ -370,7 +375,7 @@ app.delete('/users/:Username/movies/:MovieID', (req, res) => { //adds a movie to
 });
 
 //Delete (DELETE) User by username
-app.delete('/users/:Username', (req, res) => { //deletes a user
+app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => { //deletes a user
   Users.findOneAndRemove({ Username: req.params.Username }) //finds the user with the username that matches the request
     .then((user) => { //if the user is found
       if (!user) { //if the user doesn't exist
@@ -386,7 +391,7 @@ app.delete('/users/:Username', (req, res) => { //deletes a user
 });
 
 //error handling
-app.use((err, req, res, next) => {
+app.use((err, req, res, next) => { 
   console.error(err.stack);
   res.status(500).send('Something\'s not quite right!');
 });
