@@ -1,3 +1,5 @@
+//this file is known as a controller
+
 const express = require('express'), //Import express
     morgan = require('morgan'), //Import morgan
     app = express(), //Create an instance of express
