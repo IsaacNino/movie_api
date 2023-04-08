@@ -4,7 +4,7 @@
   "description": "Setting up my first API with Node.js.",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
