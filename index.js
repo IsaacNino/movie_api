@@ -21,6 +21,23 @@ app.use(bodyParser.urlencoded({ //Use body-parser to parse the request body
 app.use(bodyParser.json()); //Use body-parser to parse the request body
 app.use(methodOverride()); //Use method-override to allow for the use of HTTP verbs such as PUT and DELETE in places where the client doesn't support it
 
+const { check, validationResult } = require('express-validator'); //Import express-validator
+
+const cors = require('cors'); //Import cors
+
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com']; //Create an array of allowed origins
+
+app.use(cors({ //Use cors to allow cross-origin resource sharing
+  origin: (origin, callback) => { //Check the origin of the request
+    if(!origin) return callback(null, true); //If there is no origin, allow the request
+    if(allowedOrigins.indexOf(origin) === -1){ //If the origin is not in the allowed origins array, return an error message
+      let message = 'The CORS policy for this appilcation doesn\'t allow access from origin ' + origin; //Create an error message
+      return callback(new Error(message), false); //Return the error message
+    }
+    return callback(null, true); //If the origin is in the allowed origins array, allow the request
+  }
+}));
+
 let auth = require('./auth')(app); //Import the auth.js file and pass it the app variable
 const passport = require('passport'); //Import passport
 require('./passport'); //Import the passport.js file
@@ -294,32 +311,57 @@ app.get('/movies/directors/:Name', passport.authenticate('jwt', { session: false
 });
 
 //Update (PUT) User Data
-app.put("/users/:Username", passport.authenticate('jwt', { session: false }), (req, res) => { //updates a user's data
-  Users.findOneAndUpdate(
-    { Username: req.params.Username },
-    { $set: { //finds the user with the username that matches the request and updates the user's data
-        Username: req.body.Username, //get the username data from the request body
-        Password: req.body.Password, //get the password data from the request body
-        Email: req.body.Email, //get the email data from the request body
-        Birthday: req.body.Birthday, }, //get the birthday data from the request body
-    },
-    { new: true }
-  )
-    .then((updatedUser) => {
-      if (!updatedUser) {
-        return res.status(400).send(req.body.Username + " doesn't exist");
-      } else {
-        res.json(updatedUser);
-      }
-    }) 
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send("Error: " + error);
-    });
-});
+app.put("/users/:Username", [
+  check('Username', 'Username is required').isLength({ min: 5 }), //checks if the username is at least 5 characters long
+  check('Username', 'Username is contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+  check('Password', 'Password is required').not().isEmpty(),
+  check('Email', 'Email input is not valid').isEmail(), //checks if the username contains non alphanumeric characters
+  ],
+  passport.authenticate('jwt', { session: false }), 
+  (req, res) => { //updates a user's data
+    let errors = validationResult(req); //checks for validation errors
+    if (!errors.isEmpty()) { //if there are validation errors 
+      return res.status(422).json({ errors: errors.array() //return the errors as JSON
+  }); 
+    }
+    let hashedPassword = Users.hashPassword(req.body.Password); //hashes the password
+    Users.findOneAndUpdate(
+      { Username: req.params.Username },
+      { $set: { //finds the user with the username that matches the request and updates the user's data
+          Username: req.body.Username, //get the username data from the request body
+          Password: req.body.Password, //get the password data from the request body
+          Email: req.body.Email, //get the email data from the request body
+          Birthday: req.body.Birthday, }, //get the birthday data from the request body
+      },
+      { new: true }
+    )
+      .then((updatedUser) => {
+        if (!updatedUser) {
+          return res.status(400).send(req.body.Username + " doesn't exist");
+        } else {
+          res.json(updatedUser);
+        }
+      }) 
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send("Error: " + error);
+      });
+  });
 
 //Create (POST) Data
-app.post('/users', (req, res) => { //creates a new user
+app.post('/users', [
+check('Username', 'Username is required').isLength({ min: 5 }), //checks if the username is at least 5 characters long
+check('Username', 'Username is contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+check('Password', 'Password is required').not().isEmpty(),
+check('Email', 'Email input is not valid').isEmail(), //checks if the username contains non alphanumeric characters
+],
+(req, res) => { //creates a new user
+  let errors = validationResult(req); //checks for validation errors
+  if (!errors.isEmpty()) { //if there are validation errors 
+    return res.status(422).json({ errors: errors.array() //return the errors as JSON
+}); 
+  }
+  let hashedPassword = Users.hashPassword(req, body, password); //hashes the password
   Users.findOne({ Username: req.body.Username }) //finds a user with the username from the request body
   .then((user) => { 
     if (user) { // if the user exists
@@ -328,7 +370,7 @@ app.post('/users', (req, res) => { //creates a new user
       Users
         .create({ //create the user
           Username: req.body.Username, //get the username data from the request body
-          Password: req.body.Password, //get the password data from the request body
+          Password: hashedPassword, //get the password data from the request body
           Email: req.body.Email, //get the email data from the request body
           Birthday: req.body.Birthday //get the birthday data from the request body
         })
@@ -347,6 +389,7 @@ app.post('/users', (req, res) => { //creates a new user
 
 //Add a movie to a user's favorites
 app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => { //adds a movie to a user's list of favorites
+  
   Users.findOneAndUpdate({ Username: req.params.Username }, { //finds the user with the username that matches the request
     $push: { FavoriteMovies: req.params.MovieID } //adds the movie to the user's list of favorites
   },
@@ -398,6 +441,7 @@ app.use((err, req, res, next) => {
 });
 
 // listen for requests
-app.listen(8080, () => {
-  console.log('Your app is listening on port 8080.');
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0', () => {
+  console.log('Listening on Port ' + port);
 });
