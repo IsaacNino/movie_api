@@ -363,7 +363,7 @@ app.post('/users', [
     return res.status(422).json({ errors: errors.array() //return the errors as JSON
 }); 
   }
-  let hashedPassword = Users.hashPassword(req, body, password); //hashes the password
+  let hashedPassword = Users.hashPassword(req.body.Password); //hashes the password
   Users.findOne({ Username: req.body.Username }) //finds a user with the username from the request body
   .then((user) => { 
     if (user) { // if the user exists
