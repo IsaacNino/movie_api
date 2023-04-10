@@ -352,11 +352,11 @@ app.put("/users/:Username", [
 
 //Create (POST) Data
 app.post('/users', [
-check('Username', 'Username is required').isLength({ min: 5 }), //checks if the username is at least 5 characters long
-check('Username', 'Username is contains non alphanumeric characters - not allowed.').isAlphanumeric(), //checks if the username contains non alphanumeric characters
-check('Password', 'Password is required').not().isEmpty(), //checks if the password is empty
-check('Email', 'Email input is not valid').isEmail(), //checks if the username contains non alphanumeric characters
-],
+  check('Username', 'Username is required').isLength({ min: 5 }), //checks if the username is at least 5 characters long
+  check('Username', 'Username is contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+  check('Password', 'Password is required').notEmpty(), //checks if the password is not empty
+  check('Email', 'Email input is not valid').isEmail(), //checks if the username contains non alphanumeric characters
+  ],
 (req, res) => { //creates a new user
   let errors = validationResult(req); //checks for validation errors
   if (!errors.isEmpty()) { //if there are validation errors 
