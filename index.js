@@ -236,8 +236,8 @@ require('./passport'); //Import the passport.js file
 ]; */
 
 //Read (GET) Request
-app.get('/documentation', (req, res) => {                  
-res.sendFile('public/documentation.html', { root: __dirname });
+app.get('/', (req, res) => {                  
+res.sendFile('public/documentation.html', { root: __dirname }); //sends the documentation.html file to the client
 });
 
 // Get (READ) all users
