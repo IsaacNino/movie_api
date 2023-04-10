@@ -316,7 +316,7 @@ app.get('/movies/directors/:Name', passport.authenticate('jwt', { session: false
 app.put("/users/:Username", [
   check('Username', 'Username is required').isLength({ min: 5 }), //checks if the username is at least 5 characters long
   check('Username', 'Username is contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-  check('Password', 'Password is required').isEmpty(),
+  check('Password', 'Password is required').notEmpty(), //checks if the password is not empty
   check('Email', 'Email input is not valid').isEmail(), //checks if the username contains non alphanumeric characters
   ],
   passport.authenticate('jwt', { session: false }), 
