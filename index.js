@@ -380,9 +380,13 @@ check('Email', 'Email input is not valid').isEmail(), //checks if the username c
         .catch((error) => {  //if there's an error
           console.error(error); //log the error
           res.status(500).send('Error: ' + error); //return an error
-        })
+        });
     }
   })
+  .catch((error) => { //if there's an error 
+    console.error(error); //log the error
+    res.status(500).send('Error: ' + error); //return an error
+});
 });
 
 //Add a movie to a user's favorites
