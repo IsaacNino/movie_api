@@ -380,9 +380,10 @@ check('Email', 'Email input is not valid').isEmail(), //checks if the username c
         .catch((error) => {  //if there's an error
           console.error(error); //log the error
           res.status(500).send('Error: ' + error); //return an error
-        });
+        })
     }
-  });
+  })
+});
 
 //Add a movie to a user's favorites
 app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => { //adds a movie to a user's list of favorites
@@ -412,8 +413,7 @@ app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { se
   .catch((error) => { //if there's an error
     console.error(error); //log the error
     res.status(500).send('Error: ' + error); //return an error
-  })
-})
+  });
 });
 
 //Delete (DELETE) User by username
