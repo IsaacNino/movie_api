@@ -12,7 +12,7 @@ passport.use(new LocalStrategy({
     passwordField: 'Password' //The fields that are used to authenticate the user
 }, (username, password, callback) => { //The callback function is called when the user is authenticated
     console.log(username + '  ' + password); //Log the username and password to the console
-    Users.findOne({ Username: username })
+    Users.findOne({ Username: username, Password: password }) //took out Password: password to troubleshoot
     .then ((error, user) => { //Find the user in the database
         if (error) { //If there is an error, return it
             console.log(error);
