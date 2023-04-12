@@ -11,9 +11,9 @@ const express = require('express'), //Import express
     Movies = Models.Movie, //Movies is a variable that represents the Movie model
     Users = Models.User; //Users is a variable that represents the User model
 
-/* mongoose.connect('mongodb://localhost:27017/themovieapi', { useNewUrlParser: true, useUnifiedTopology: true}); // Connect to the database */
+/* mongoose.connect('mongodb://localhost:27017/themovieapi', { useNewUrlParser: true, useUnifiedTopology: true}); */ // Connect to the app database 
 
-mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true }); // Connect to the database
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true }); // Connect to the database 
 
 app.use(express.static('public')); //Serve static files from the public folder
 app.use(morgan('common')); //Log all requests to the console
