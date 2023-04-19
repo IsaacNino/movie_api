@@ -11,13 +11,14 @@ passport.use(new LocalStrategy({
     usernameField: 'Username', //The fields that are used to authenticate the user
     passwordField: 'Password' //The fields that are used to authenticate the user
 }, (username, password, callback) => { //The callback function is called when the user is authenticated
-    console.log(username + '  ' + password); //Log the username and password to the console
-    Users.findOne({ Username: username, Password: password }) //took out Password: password to troubleshoot
-    .then ((error, user) => { //Find the user in the database
-        if (error) { //If there is an error, return it
+    console.log(username + '  ' + password); //Log the username and password to the console;
+    Users.findOne({ Username: username }) //took out Password: password to troubleshoot
+    .then ((user) => { //Find the user in the database
+        console.log("TEST", user);
+        /* if (error) { //If there is an error, return it
             console.log(error);
             return callback(error); //If there is an error, return it
-        }
+        } */
 
         if (!user) { //If there is no user, return false
             console.log('incorrect username'); //If there is no user, return false
@@ -28,9 +29,10 @@ passport.use(new LocalStrategy({
             console.log('incorrect password'); //If the password is not valid, return false
             return callback(null, false, { message: 'Incorrect password.' }); // If the password is not valid, return false
         }
-
-        console.log('finished'); 
-        return callback(null, user); //If there is no error, return the user
+        else {
+            console.log('finished'); 
+            return callback(null, user); //If there is no error, return the user
+        }
     });
 }));
 
