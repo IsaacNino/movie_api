@@ -74,7 +74,7 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (r
 });
 
 //Get (READ) all movies 
-app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => { //requests data for all movies and au
+app.get('/movies', (req, res) => { //requests data for all movies and au
   Movies.find() //finds all movies
   .then((movies) => { //if the movies are found
     res.status(201).json(movies); //return the movies as JSON
