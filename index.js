@@ -27,7 +27,7 @@ const { check, validationResult } = require('express-validator'); //Import expre
 
 const cors = require('cors'); //Import cors
 
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com']; //Create an array of allowed origins
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234']; //Create an array of allowed origins
 
 app.use(cors({ //Use cors to allow cross-origin resource sharing
   origin: (origin, callback) => { //Check the origin of the request
